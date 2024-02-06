@@ -1,25 +1,19 @@
 import prompt from 'prompt'
 
 const fib = (err, { number }) => {
-  const limit = number < 1 ? 0 : number - 1
+  const limit = Number(number)
   const sequence = []
-  let current
 
-  for (let i = 0; i <= limit; i++) {
-    let sLength = sequence.length
-
-    if (sLength > 1) {
-      let y = sLength - 2
-      let z = sLength - 1
-      current = sequence[y] + sequence[z]
+  for (let i = 0; i < limit; i++) {
+    if (i > 1) {
+      const current = sequence[i - 2] + sequence[i - 1]
+      sequence.push(current)
     } else {
-      current = sLength
+      sequence.push(i)
     }
-
-    sequence.push(current)
   }
 
-  console.log(sequence)
+  console.log('Fibonacci sequence: ', sequence)
 }
 
 const main = () => {
@@ -27,15 +21,16 @@ const main = () => {
     properties: {
       number: {
         pattern: /^\d+$/,
-        message: 'Input must be a valid number',
+        message: 'The input must be a positive integer number!',
         required: true,
       },
     },
   }
 
   prompt.start()
+
   console.log(
-    'Please enter the number of elements you wish to retrieve from the Fibonacci sequence'
+    'Please enter the number of elements you wish to retrieve from the fibonacci sequence'
   )
 
   prompt.get(schema, fib)
